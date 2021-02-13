@@ -507,10 +507,12 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   ProtosReadDescriptorResponse *result = [[ProtosReadDescriptorResponse alloc] init];
   [result setRequest:q];
 
-  @try {
-      int value = [descriptor.value intValue];
-  } @catch (NSException *exception) {
-    NSLog(exception.reason);
+  if([descriptor.value isKindOfClass:[NSNumber class]]){
+    value = [descriptor.value intValue];
+  }
+
+  if([descriptor.value isKindOfClass:[NSData class]]){
+    value = CFSwapInt16BigToHost((int*)([descriptor.value bytes]));
   }
 
   [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
@@ -716,12 +718,14 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setCharacteristicUuid:[descriptor.characteristic.UUID fullUUIDString]];
   [result setServiceUuid:[descriptor.characteristic.service.UUID fullUUIDString]];
 
-  @try {
-      int value = [descriptor.value intValue];
-  } @catch (NSException *exception) {
-    NSLog(exception.reason);
+  if([descriptor.value isKindOfClass:[NSNumber class]]){
+    value = [descriptor.value intValue];
   }
 
+  if([descriptor.value isKindOfClass:[NSData class]]){
+    value = CFSwapInt16BigToHost((int*)([descriptor.value bytes]));
+  }
+  
   [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
   return result;
 }

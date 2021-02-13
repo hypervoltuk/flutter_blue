@@ -507,9 +507,12 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   ProtosReadDescriptorResponse *result = [[ProtosReadDescriptorResponse alloc] init];
   [result setRequest:q];
 
-  bytes value = getBytes([descriptor.value bytes]);
+  NSData *data = [NSData descriptor.value];
+  NSUInteger len = [data length];
+  Byte *byteData = (Byte*)malloc(len);
+  memcpy(byteData, [data bytes], len);
 
-  [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+  [result setValue:[NSData dataWithBytes:&data length:len]];
   [_channel invokeMethod:@"ReadDescriptorResponse" arguments:[self toFlutterData:result]];
 
   // If descriptor is CCCD, send a SetNotificationResponse in case anything is awaiting
@@ -712,9 +715,12 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setCharacteristicUuid:[descriptor.characteristic.UUID fullUUIDString]];
   [result setServiceUuid:[descriptor.characteristic.service.UUID fullUUIDString]];
 
-  bytes value = getBytes([descriptor.value bytes]);
+  NSData *data = [NSData descriptor.value];
+  NSUInteger len = [data length];
+  Byte *byteData = (Byte*)malloc(len);
+  memcpy(byteData, [data bytes], len);
 
-  [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+  [result setValue:[NSData dataWithBytes:&data length:len]];
   return result;
 }
 

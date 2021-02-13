@@ -507,7 +507,7 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   ProtosReadDescriptorResponse *result = [[ProtosReadDescriptorResponse alloc] init];
   [result setRequest:q];
 
-  NSData *data = [NSData descriptor.value];
+  NSData *data = descriptor.value;
   NSUInteger len = [data length];
   Byte *byteData = (Byte*)malloc(len);
   memcpy(byteData, [data bytes], len);
@@ -715,7 +715,7 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setCharacteristicUuid:[descriptor.characteristic.UUID fullUUIDString]];
   [result setServiceUuid:[descriptor.characteristic.service.UUID fullUUIDString]];
 
-  NSData *data = [NSData descriptor.value];
+  NSData *data = descriptor.value;
   NSUInteger len = [data length];
   Byte *byteData = (Byte*)malloc(len);
   memcpy(byteData, [data bytes], len);

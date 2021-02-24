@@ -508,6 +508,7 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setRequest:q];
 
   NSLog(@"Flutter blue underlying descriptor value in bytes:%@", descriptor.value);
+  NSLog(@"%@", descriptor.value);
 
   NSData *data = descriptor.value;
   NSUInteger len = [data length];
@@ -718,6 +719,7 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setServiceUuid:[descriptor.characteristic.service.UUID fullUUIDString]];
 
   NSLog(@"Flutter blue underlying descriptor value in bytes:%@", descriptor.value);
+  NSLog(@"%@", descriptor.value);
 
   NSData *data = descriptor.value;
   NSUInteger len = [data length];

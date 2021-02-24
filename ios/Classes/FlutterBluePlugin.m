@@ -508,9 +508,13 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setRequest:q];
 
   NSLog(@"Flutter blue underlying descriptor value in bytes:%@", [NSData descriptor.value]);
-  NSUInteger len = [descriptor.value length];
 
-  [result setValue:[NSData dataWithBytes:descriptor.value length:len]];
+  NSData *data = descriptor.value;
+  NSUInteger len = [data length];
+  Byte *byteData = (Byte*)malloc(len);
+  memcpy(byteData, [data bytes], len);
+
+  [result setValue:[NSData dataWithBytes:&data length:len]];
   [_channel invokeMethod:@"ReadDescriptorResponse" arguments:[self toFlutterData:result]];
 
   // If descriptor is CCCD, send a SetNotificationResponse in case anything is awaiting
@@ -714,9 +718,13 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setServiceUuid:[descriptor.characteristic.service.UUID fullUUIDString]];
 
   NSLog(@"Flutter blue underlying descriptor value in bytes:%@", [NSData descriptor.value]);
-  NSUInteger len = [descriptor.value length];
 
-  [result setValue:[NSData dataWithBytes:descriptor.value length:len]];
+  NSData *data = descriptor.value;
+  NSUInteger len = [data length];
+  Byte *byteData = (Byte*)malloc(len);
+  memcpy(byteData, [data bytes], len);
+
+  [result setValue:[NSData dataWithBytes:&data length:len]];
   return result;
 }
 

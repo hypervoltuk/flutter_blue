@@ -508,7 +508,17 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setRequest:q];
 
   NSLog(@"Flutter blue underlying descriptor value in bytes:%@", descriptor.value);
-  [result setValue:descriptor.value];
+  @try {
+      if  ([descriptor.value isKindOfClass:NSNumber.class]) {
+          int value = [descriptor.value intValue];
+          [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+      } else {
+          [result setValue:descriptor.value];
+      }
+  } @catch (NSException *exception) {
+      NSLog(exception.reason);
+  }
+
   [_channel invokeMethod:@"ReadDescriptorResponse" arguments:[self toFlutterData:result]];
 
   // If descriptor is CCCD, send a SetNotificationResponse in case anything is awaiting
@@ -712,7 +722,18 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setServiceUuid:[descriptor.characteristic.service.UUID fullUUIDString]];
 
   NSLog(@"Flutter blue underlying descriptor value in bytes:%@", descriptor.value);
-  [result setValue:descriptor.value];
+  NSLog(@"Flutter blue underlying descriptor value in bytes:%@", descriptor.value);
+  @try {
+      if  ([descriptor.value isKindOfClass:NSNumber.class]) {
+          int value = [descriptor.value intValue];
+          [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+      } else {
+          [result setValue:descriptor.value];
+      }
+  } @catch (NSException *exception) {
+      NSLog(exception.reason);
+  }
+
   return result;
 }
 
